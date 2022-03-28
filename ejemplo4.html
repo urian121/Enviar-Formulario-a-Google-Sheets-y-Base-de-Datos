@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+      <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Add Material CSS, replace Bootstrap CSS -->
+    <link href="assets/css/material.min.css" rel="stylesheet">
+    <title>Google Sheets</title>
+    <style>
+    body{
+        background-color: #fcfcfc;
+        height: 100vh;
+    }
+    .container{
+      background-color: #fff !important;
+      border-radius: 10px;
+      box-shadow: 0 2.5rem 2rem -2rem hsl(200 50% 20% / 40%);
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+
+    
+    .loadingspinner {
+        margin: 0 auto;
+        pointer-events: none;
+        width: 2.5em;
+        height: 2.5em;
+        border: 0.4em solid transparent;
+        border-color: #eee;
+        border-top-color: #3E67EC;
+        border-radius: 50%;
+        animation: loadingspin 1s linear infinite;
+      }
+
+      @keyframes loadingspin {
+        100% {
+            transform: rotate(360deg)
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+  <div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12 mb-5">
+        <h2 class="text-center mt-3">Formulario con Google Sheets <hr></h2>
+    </div>
+
+    <div class="col-md-5">
+        <form name="my-google-sheet" id="my-google-sheet" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                <input type="text" name="Nombre" class="form-control" required>
+                <small id="emailHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+            <div class="form-group">
+                <label for="Correo">Correo</label>
+                <input type="email" name="Correo" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="Movil">Movil</label>
+                <input type="number" name="Movil" class="form-control" required>
+            </div>
+        
+            <div class="form-group mb-5 text-center mt-5">
+                <button type="submit" id="btnSendForm" class="btn btn-primary btn-sm">Enviar Formulario</button>
+
+                <div id="snipper" style="display: none;">
+                  <div class="loadingspinner"></div> 
+                  <p>Enviando información ....</p>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="col-md-5">
+        <img src="assets/imgs/Google-Sheets-1.png" alt="" class="img-fluid">
+    </div>
+  </div>
+
+  <div class="row justify-content-center msjAlert d-none">
+    <div class="col-md-12 mb-5">
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>Felicitaciones!</strong> los datos del formulario han sido enviados a 
+        <strong>Google Sheets</strong>  y a <strong> BD MySql</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="assets/js/material.min.js"></script>
+
+    <script>
+    $("#my-google-sheet").submit(function(event){
+      event.preventDefault(); //PREVENIR UNA RECARGA
+      var post_url = "recibFormGoogleSheets.php"; //ACCION DEL FORMULARIO
+      var request_method = $(this).attr("method"); //METODO DEL FORMULARIO
+      var form_data = $(this).serialize(); //RECIBIENDO TODOS LOS DATOS DEL FORMULARIO
+      
+      $("#btnSendForm").hide(50);
+      $("#snipper").show(50);
+        $.ajax({
+          url : post_url,
+          type: request_method,
+          data : form_data,
+          success: function(response) {
+            console.log(response);
+            if (response["msj"] === true) {
+
+              /*======= Envio de datos a Google Sheets =======*/
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzbltyuB4mdNE8EI0zmRO0COcrdqfgJFvq1mVVOPz0246-mxLrTkQ9JZD-2nQ75Ui8p3Q/exec'
+            const form = document.forms['my-google-sheet']
+
+              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+              .then(response => 
+              $('.msjAlert').removeClass('d-none'),
+             
+              setTimeout(
+                ()=>{
+                  $("#snipper").hide(100);
+                } , 2000
+                ),
+
+              $("#my-google-sheet")[0].reset(), //Limpiando el formulario
+              setTimeout(
+                ()=>{
+                    $(".msjAlert").hide();
+                } , 10000
+              ),
+           
+              console.log('Success!', response))
+              .catch(error => console.error('Error!', error.message))
+           /*======= fin del  envio de datos a Google Sheets =======*/
+
+          }else{
+            console.log('Error')
+          }
+        } 
+      });
+    });
+  </script>
+
+
+  </body>
+</html>

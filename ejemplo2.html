@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+      <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Add Material CSS, replace Bootstrap CSS -->
+    <link href="assets/css/material.min.css" rel="stylesheet">
+    <title>Google Sheets</title>
+    <style>
+    body{
+        background-color: #fcfcfc;
+        height: 100vh;
+    }
+    </style>
+  </head>
+  <body>
+    
+  <div class="container border mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12 mb-5">
+        <h2 class="text-center">Formulario con Google Sheets <hr></h2>
+    </div>
+
+    <div class="col-md-5">
+        <form name="my-google-sheet" id="my-google-sheet"  method="POST">
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                <input type="text" name="Nombre" id="Nombre" class="form-control" required>
+                <small id="emailHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+            <div class="form-group">
+                <label for="Correo">Correo</label>
+                <input type="email" name="Correo" id="Correo" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="Movil">Movil</label>
+                <input type="number" name="Movil" id="Movil" class="form-control" required>
+            </div>
+        
+            <div class="form-group mb-5 text-center mt-5">
+              <button type="submit" id="btnSubmit" class="btn btn-primary btn-sm">Enviar Formulario</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <img src="assets/imgs/Google-Sheets-1.png" alt="" class="img-fluid">
+    </div>
+  </div>
+
+  </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="assets/js/material.min.js"></script>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzbltyuB4mdNE8EI0zmRO0COcrdqfgJFvq1mVVOPz0246-mxLrTkQ9JZD-2nQ75Ui8p3Q/exec'
+        const form = document.forms['my-google-sheet']
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response =>
+               
+            console.log('Success!', response))
+            .catch(error => console.error('Error!', error.message))
+        }) 
+  </script>
+
+
+  </body>
+</html>
