@@ -1,0 +1,32 @@
+body{
+    background-color: #fcfcfc;
+    height: 100vh;
+}
+.container{
+  background-color: #fff !important;
+  border-radius: 10px;
+  box-shadow: 0 2.5rem 2rem -2rem hsl(200 50% 20% / 40%);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+h2{
+  color: orange;
+  font-weight: 800;
+}
+
+.loadingspinner {
+    margin: 0 auto;
+    pointer-events: none;
+    width: 2.5em;
+    height: 2.5em;
+    border: 0.4em solid transparent;
+    border-color: #eee;
+    border-top-color: #3E67EC;
+    border-radius: 50%;
+    animation: loadingspin 1s linear infinite;
+  }
+
+  @keyframes loadingspin {
+    100% {
+        transform: rotate(360deg)
+    }
+  }
