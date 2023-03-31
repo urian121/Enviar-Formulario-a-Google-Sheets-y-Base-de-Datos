@@ -72,53 +72,54 @@
     <script src="assets/js/material.min.js"></script>
 
     <script>
-    $("#my-google-sheet").submit(function(event){
-      event.preventDefault(); //PREVENIR UNA RECARGA
-      var post_url = "recibFormGoogleSheets.php"; //ACCION DEL FORMULARIO
-      var request_method = $(this).attr("method"); //METODO DEL FORMULARIO
-      var form_data = $(this).serialize(); //RECIBIENDO TODOS LOS DATOS DEL FORMULARIO
-      
-      $("#btnSendForm").hide(50);
-      $("#snipper").show(50);
-        $.ajax({
-          url : post_url,
-          type: request_method,
-          data : form_data,
-          success: function(response) {
-            console.log(response);
-            if (response["msj"] === true) {
-
-              /*======= Envio de datos a Google Sheets =======*/
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzbltyuB4mdNE8EI0zmRO0COcrdqfgJFvq1mVVOPz0246-mxLrTkQ9JZD-2nQ75Ui8p3Q/exec'
-            const form = document.forms['my-google-sheet']
-
-              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-              .then(response => 
-              $('.msjAlert').removeClass('d-none'),
-             
-              setTimeout(
-                ()=>{
-                  $("#snipper").hide(100);
-                } , 2000
-                ),
-
-              $("#my-google-sheet")[0].reset(), //Limpiando el formulario
-              setTimeout(
-                ()=>{
-                    $(".msjAlert").hide();
-                } , 10000
-              ),
-               $("#btnSendForm").show(50);
-              console.log('Success!', response))
-              .catch(error => console.error('Error!', error.message))
-           /*======= fin del  envio de datos a Google Sheets =======*/
-
-          }else{
-            console.log('Error')
-          }
-        } 
-      });
-    });
+   $("#my-google-sheet").submit(function(event){
+  event.preventDefault(); //PREVENIR UNA RECARGA
+  var post_url = "recibFormGoogleSheets.php"; //ACCION DEL FORMULARIO
+  var request_method = $(this).attr("method"); //METODO DEL FORMULARIO
+  var form_data = $(this).serialize(); //RECIBIENDO TODOS LOS DATOS DEL FORMULARIO
+  
+  $("#btnSendForm").hide(50);
+  $("#snipper").show(50);
+  
+  $.ajax({
+    url : post_url,
+    type: request_method,
+    data : form_data,
+    success: function(response) {
+      console.log(response);
+      if (response["msj"] === true) {
+        /*======= Envio de datos a Google Sheets =======*/
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzbltyuB4mdNE8EI0zmRO0COcrdqfgJFvq1mVVOPz0246-mxLrTkQ9JZD-2nQ75Ui8p3Q/exec'
+        const form = document.forms['my-google-sheet']
+  
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          $('#my-google-sheet').addClass('d-none');
+          $('.msjAlert').removeClass('d-none');
+  
+          setTimeout(() => {
+            $("#snipper").hide(100);
+          }, 2000);
+  
+          $("#my-google-sheet")[0].reset(); //Limpiando el formulario
+  
+          setTimeout(() => {
+            $(".msjAlert").hide();
+            $('#my-google-sheet').removeClass('d-none');
+          }, 10000);
+  
+          $("#btnSendForm").show(50);
+  
+          console.log('Success!', response);
+        })
+        .catch(error => console.error('Error!', error.message))
+        /*======= fin del  envio de datos a Google Sheets =======*/
+      } else {
+        console.log('Error');
+      }
+    } 
+  });
+});
   </script>
 
 
