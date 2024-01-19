@@ -4,3 +4,6 @@
 
 
 ![](https://raw.githubusercontent.com/urian121/imagenes-proyectos-github/master/enviar-formulario-a-google-sheet.png)
+
+# Resultado final
+![](https://raw.githubusercontent.com/urian121/imagenes-proyectos-github/master/resultado-enviar-formulario-google-sheet.png)
